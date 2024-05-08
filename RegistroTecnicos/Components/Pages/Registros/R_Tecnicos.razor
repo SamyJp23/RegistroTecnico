@@ -42,16 +42,16 @@
                             <span> Crear <i class="bi bi-file-earmark" /></span>
                         </button>
                         @*Nuevo*@
-            <button type="button" class="btn btn-primary mx-2" @onclick="() => Guardar()">
+            <button type="button" class="btn btn-primary mx-2" @onclick="() => Nuevo()">
                 <span> Nuevo <i class="bi bi-file-earmark" /></span>
             </button>
             @*Eliminar*@
             
-            <button type="button" class="btn btn-primary mx-3" @onclick="() => Guardar()">
+            <button type="button" class="btn btn-primary mx-3" @onclick="() => Eliminar()">
                 <span> Eliminar <i class="bi bi-file-earmark" /></span>
             </button>
                         @*Volver*@
-                            <a href="/DetailPrioridades" class="btn btn-secondary">
+                            <a href="/Consulta" class="btn btn-secondary">
                                 <span> Volver a Consulta </span><i class="bi bi-arrow-return-left" />
                             </a>
                     </div>
@@ -65,15 +65,23 @@
     [Parameter]
     public int tecnicoId { get; set; }
     public Tecnicos tecnicos { get; set; } = new Tecnicos();
-    
+
 
     public void Guardar()
     {
-
+        Console.WriteLine("Guardar");
     }
     public void Buscar()
     {
-        
+
+    }
+    public void Nuevo()
+    {
+        this.tecnicos = new Tecnicos();
+    }
+    public void Eliminar()
+    {
+        Console.WriteLine("Eliminar");
     }
 
 }
