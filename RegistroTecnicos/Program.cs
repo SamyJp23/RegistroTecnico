@@ -1,10 +1,18 @@
 using RegistroTecnicos.Components;
+using RegistroTecnicos.DAL;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+//Obtener el constructor
+var ConStr = builder.Configuration.GetConnectionString("ConStr");
+
+//Agregamos el contexto
+builder.Services.AddDbContext<Contexto>(Options => Options.UseSqlite(ConStr));
 
 var app = builder.Build();
 
