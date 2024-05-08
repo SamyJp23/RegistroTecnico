@@ -63,17 +63,44 @@
 
 @code {
     [Parameter]
-    public int tecnicoId { get; set; }
+    public int? tecnicoId { get; set; }
     public Tecnicos tecnicos { get; set; } = new Tecnicos();
+    NotificationService notificationService = new NotificationService();
+    public bool Existe { get; set; } = false;
+    public bool Guardo { get; set; } = false;
+    public bool Encontro { get; set; } = false;
 
+
+    protected override void OnInitialized()
+    {
+        if (tecnicoId.HasValue)
+        {
+            tecnicos.IdTecnico = tecnicoId.Value;
+            Buscar();
+        }
+    }
 
     public void Guardar()
     {
-        Console.WriteLine("Guardar");
-    }
-    public void Buscar()
-    {
+        
+            if (Validar()){
+                return;
 
+
+            }
+            else
+            {
+                var crear = tecnicosService.Guardar(tecnicos);
+            }
+            }
+
+    public async Task Buscar()
+    {
+        var encontrado = await tecnicosService.Buscar(tecnicos.IdTecnico);
+        if (encontrado != null)
+            tecnicos = encontrado;
+
+        Encontro = true;
     }
     public void Nuevo()
     {
@@ -83,5 +110,13 @@
     {
         Console.WriteLine("Eliminar");
     }
+    public bool Validar()
+    {
+        Existe = (tecnicosService.Listar(t => t.Nombre!.ToLower() == tecnicos.Nombre!.ToLower() && t.IdTecnico != t.IdTecnico).Any());
+        return Existe;
+    }
 
 }
+        
+ }
+  
