@@ -2,24 +2,21 @@
 @page "/Registro/{tecnicoId:int}"
 @inject TecnicosServices tecnicosService
 @rendermode InteractiveServer
-<h3>R_Tecnicos</h3>
-<PageTitle>Registro Prioridades</PageTitle>
+<h3>Tecnicos</h3>
+<PageTitle>Registro Tecnicos</PageTitle>
 <EditForm Model="tecnicos" OnInvalidSubmit="Guardar" FormName="tecnicosForm">
     <DataAnnotationsValidator />
     <div class="card shadow-lg">
             <div class="card-header">
-                <h3>Crear Prioridades</h3>
+                <h3>Registrar Tecnico</h3>
                 <div/>
                 <div class="row">
                 @*PrioridadId*@
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-                <label class="form-label">Id Prioridad</label>
+                <label class="form-label">Id Tecnico</label>
                 <div class="input-group mb-3">
-                    <InputNumber @bind-Value="tecnicos.IdTecnico" class="form-control" aria-describedby="buscarButton" />
-                    <button @onclick="Buscar" class="btn btn-primary" type="button" id="buscarButton">
-                        Buscar
-                        <i class="oi oi-magnifying-glass" />
-                    </button>
+                    <InputNumber @bind-Value="tecnicos.IdTecnico" class="form-control"/>
+                    
                 </div>
 
             </div>
@@ -31,7 +28,7 @@
             </div>
             @*DiasCompromisos*@
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
-                <label class="form-label">Dias Compromiso</label>
+                <label class="form-label">Sueldo Hora</label>
                 <div class="input-group mb-3">
                     <InputNumber @bind-Value="tecnicos.SueldoHora" class="form-control" aria-describedby="buscarButton" />
 
@@ -40,9 +37,20 @@
         </div>
          @*Botones*@
                     <div class="card-footer d-flex justify-content-between">
-                        <button type="button" class="btn btn-primary" @onclick="() => Guardar()">
+                        @*Crear*@
+                        <button type="button" class="btn btn-primary mx-2" @onclick="() => Guardar()">
                             <span> Crear <i class="bi bi-file-earmark" /></span>
                         </button>
+                        @*Nuevo*@
+            <button type="button" class="btn btn-primary mx-2" @onclick="() => Guardar()">
+                <span> Nuevo <i class="bi bi-file-earmark" /></span>
+            </button>
+            @*Eliminar*@
+            
+            <button type="button" class="btn btn-primary mx-3" @onclick="() => Guardar()">
+                <span> Eliminar <i class="bi bi-file-earmark" /></span>
+            </button>
+                        @*Volver*@
                             <a href="/DetailPrioridades" class="btn btn-secondary">
                                 <span> Volver a Consulta </span><i class="bi bi-arrow-return-left" />
                             </a>
@@ -54,7 +62,10 @@
 
 
 @code {
+    [Parameter]
+    public int tecnicoId { get; set; }
     public Tecnicos tecnicos { get; set; } = new Tecnicos();
+    
 
     public void Guardar()
     {
