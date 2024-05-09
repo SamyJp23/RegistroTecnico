@@ -83,16 +83,14 @@
     public void Guardar()
     {
         
-            if (Validar()){
+           if (Validar()){
                 return;
-
-
-            }
+           }
             else
             {
                 var crear = tecnicosService.Guardar(tecnicos);
             }
-            }
+    }
 
     public async Task Buscar()
     {
@@ -106,9 +104,33 @@
     {
         this.tecnicos = new Tecnicos();
     }
-    public void Eliminar()
+    public async Task Eliminar()
     {
-        Console.WriteLine("Eliminar");
+        if (!Validar())
+        {
+            bool eliminado = await tecnicosService.Eliminar(tecnicos.IdTecnico); 
+
+            if (eliminado)
+            {
+                notificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Success,
+                        Summary = "Eliminado",
+                        Detail = "Registro eliminado correctamente",
+                        Duration = 5000
+                    });
+            }
+            else
+            {
+                notificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Summary = "Error",
+                        Detail = "Error al eliminar el registro",
+                        Duration = 5000
+                    });
+            }
+        }
     }
     public bool Validar()
     {
@@ -118,5 +140,5 @@
 
 }
         
- }
+ 
   
