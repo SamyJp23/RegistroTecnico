@@ -7,6 +7,16 @@
     <div class="card-body">
         <div class="row mb-3 align-items-end">
 
+            @*Filtro*@
+            <div class="col-md-3">
+                <label for="Filtro" class="form-label">Filtrar por:</label>
+                <select @bind="filtro" class="form-select">
+                    <option value="id">ID</option>
+                    <option value="nombre">Nombre</option>
+                    <option value="sueldo">Sueldo</option>
+                </select>
+            </div>
+
            @*Barra Busqueda*@
             <div class="col-md-6">
                 <label for="ValorFiltro" class="form-label">Búsqueda:</label>
@@ -17,12 +27,14 @@
                     </button>
                 </div>
             </div>
+
             @*Boton Crear*@
             <div class="col-md-3 text-end">
                 <a href="/Create" class="btn btn-success" type="button"><span class="bi bi-floppy"></span> Crear </a>
             </div>
         </div>
     </div>
+
     @*Tabla*@
     <table class="table table-bordered text-center">
         <thead class="bg-primary text-white">
@@ -44,6 +56,7 @@
                     <td>@tecnicos.Nombre</td>
                     <td>@tecnicos.SueldoHora</td>
                     <td>
+
                        @*Boton Details*@
                         <a href="/Details/@tecnicos.IdTecnico" style="border: none; background-color: transparent;" class="btn-detalle">
                             <span class="bi bi-info-circle-fill" style="font-size: 2rem;"></span>
@@ -72,6 +85,5 @@
     public List<Tecnicos> ListaTecnicos = new List<Tecnicos>();
     private string valorFiltro = "";
     private string filtro = "Id";
-    public void Guardar(){}
     public void Buscar() { }
 }
