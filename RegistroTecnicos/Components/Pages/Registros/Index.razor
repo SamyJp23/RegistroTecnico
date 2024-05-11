@@ -1,8 +1,10 @@
 ﻿@page "/"
 @page "/Index"
+@inject TecnicosServices tecnicosServices
+@rendermode InteractiveServer
 <EditForm Model="ListaTecnicos" class="border shadow-lg p-3 rounded">
     <div class="card-header bg-primary text-white text-center py-2 rounded">
-        <h3 style="font-weight: bold;" class="mb-0 font-weight-bold">Consulta Tecnicos</h3>
+        <h3 style="font-weight: bold;" class="mb-0 font-weight-bold">Consulta T&eacute;cnicos</h3>
     </div>
     <div class="card-body">
         <div class="row mb-3 align-items-end">
@@ -58,7 +60,7 @@
                     <td>
 
                        @*Boton Details*@
-                        <a href="/Details/@tecnicos.IdTecnico" style="border: none; background-color: transparent;" class="btn-detalle">
+                        <a href="/Tecnicos/Details/@tecnicos.IdTecnico" style="border: none; background-color: transparent;" class="btn-detalle">
                             <span class="bi bi-info-circle-fill" style="font-size: 2rem;"></span>
                         </a>
 
@@ -72,7 +74,7 @@
                    
                     <td>
                         @*Boton Eliminar*@
-                        <a href="/Prioridad/Delete/@tecnicos.IdTecnico" style="border: none; background-color: transparent;" class="btn-eliminar">
+                        <a href="/Delete/@tecnicos.IdTecnico" style="border: none; background-color: transparent;" class="btn-eliminar">
                             <span class="bi bi-dash-circle-fill" style="font-size: 2rem;"></span>
                         </a>
                     </td>
@@ -85,5 +87,9 @@
     public List<Tecnicos> ListaTecnicos = new List<Tecnicos>();
     private string valorFiltro = "";
     private string filtro = "Id";
+    protected override void OnInitialized()
+    {
+        ListaTecnicos = tecnicosServices.Listar(c => true);
+    }
     public void Buscar() { }
 }
