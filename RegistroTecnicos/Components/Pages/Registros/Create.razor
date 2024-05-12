@@ -72,13 +72,10 @@
     public int? tecnicoId { get; set; }
     public bool Existe { get; set; } = false;
     public bool mostrarNotificacion = false;
+    AlertColor alertColorGuardo,alertColorError;
+    IconName alertIconNameError, alertIconNameGuardo;
+    string alertaGuardo , alertaError = "";
 
-    AlertColor alertColorGuardo;
-    AlertColor alertColorError;
-    IconName alertIconNameError;
-    IconName alertIconNameGuardo;
-    string alertaGuardo = "";
-    string alertaError = "";
     public async Task MostrarNotificacion()
     {
         mostrarNotificacion = true;
