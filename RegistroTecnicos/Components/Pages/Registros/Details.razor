@@ -43,9 +43,6 @@ else
     public int IdTecnico { get; set; }
     public Tecnicos? Tecnicos { get; set; } = new Tecnicos();
 
-
-
-
     protected override async Task OnInitializedAsync()
     {
         Tecnicos = await tecnicosServices.Buscar(IdTecnico);
