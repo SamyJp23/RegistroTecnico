@@ -2,9 +2,9 @@
 @page "/Create{TecnicoId:int}"
 @inject TecnicosServices tecnicosService
 @rendermode InteractiveServer
+
 <EditForm Model="Tecnicos" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
-
     @*Alerta Guardado*@
     <Alert Color="@alertColorGuardo" Dismissable="false" Hidden="@(!mostrarNotificacion)">
        
