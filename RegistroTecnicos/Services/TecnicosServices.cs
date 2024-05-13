@@ -66,6 +66,7 @@ namespace RegistroTecnicos.Services
                 .ToList();
         }
 
+
     }
 }
 
