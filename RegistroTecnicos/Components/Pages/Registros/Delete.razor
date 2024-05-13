@@ -2,6 +2,7 @@
 @page "/Delete/{IdTecnico:int}"
 @inject TecnicosServices tecnicosServices
 @inject NavigationManager navigationManager
+@inject NotificationService NotificationService 
 @rendermode InteractiveServer
 <PageTitle>Eliminar T&eacute;cnico</PageTitle>
 
@@ -50,6 +51,7 @@
                 @*Boton Volver*@
                 <button type="button" class="btn btn-outline-primary" @onclick="Volver"><i class="bi bi-box-arrow-left"></i> Volver</button>
             </div>
+
         </div>
     </div>
 }
@@ -73,15 +75,10 @@ else
 
     public async Task EliminarTecnico()
     {
-        if (IdTecnico == 0 || Tecnicos == null)
-        {
-            return;
-        }
+        var eliminado = await tecnicosServices.Eliminar(Tecnicos.IdTecnico);
+        Volver();
 
-        if (await tecnicosServices.Eliminar(IdTecnico))
-        {
-            Volver();
-        }
+
     }
 
     public void Volver()
