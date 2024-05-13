@@ -100,7 +100,6 @@
 
     public void Guardar()
     {
-
         if (Validar())
         {
             AlertaError();
@@ -117,10 +116,8 @@
     }
     public void Nuevo()
     {
-        this.Tecnicos = new Tecnicos();
-        
+        this.Tecnicos = new Tecnicos();  
     }
-   
     public bool Validar()
     {
         Existe = (tecnicosService.Listar(t => t.Nombre!.ToLower() == Tecnicos.Nombre!.ToLower() && t.IdTecnico != Tecnicos.IdTecnico).Any());
