@@ -106,7 +106,6 @@
         if (tecnicoId.HasValue)
         {
             Tecnicos.IdTecnico = tecnicoId.Value;
-            Buscar();
         }
     }
 
@@ -132,12 +131,8 @@
     {
         this.Tecnicos = new Tecnicos();
         
-
     }
-    public void Buscar()
-    {
-
-    }
+   
     public bool Validar()
     {
         Existe = (tecnicosService.Listar(t => t.Nombre!.ToLower() == Tecnicos.Nombre!.ToLower() && t.IdTecnico != Tecnicos.IdTecnico).Any());
