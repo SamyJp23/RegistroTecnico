@@ -27,7 +27,7 @@ namespace RegistroTecnicos.Services
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> Modificar(Tecnicos tecnicos)
+        private async Task<bool> Modificar(Tecnicos tecnicos)
         {
             _context.Update(tecnicos);
             return await _context.SaveChangesAsync() > 0;
