@@ -1,6 +1,6 @@
 ﻿@page "/"
 @page "/Index"
-@inject TecnicosServices tecnicosServices
+@inject TecnicosServices tecnicosService
 @rendermode InteractiveServer
 
 <EditForm Model="ListaTecnicos" class="border shadow-lg p-3 rounded">
@@ -91,7 +91,7 @@
 
     protected override void OnInitialized()
     {
-        ListaTecnicos = tecnicosServices.Listar(c => true);
+        ListaTecnicos = tecnicosService.Listar(c => true);
     }
     public void Buscar()
     {
@@ -99,20 +99,20 @@
         {
             if (filtro == "id" && int.TryParse(valorFiltro, out int IdTecnico))
             {
-                ListaTecnicos = tecnicosServices.Listar(t => t.IdTecnico == IdTecnico);
+                ListaTecnicos = tecnicosService.Listar(t => t.IdTecnico == IdTecnico);
             }
             else if (filtro == "nombre")
             {
-                ListaTecnicos = tecnicosServices.Listar(t => t.Nombre == valorFiltro);
+                ListaTecnicos = tecnicosService.Listar(t => t.Nombre == valorFiltro);
             }
             else if (filtro == "sueldohora" && double.TryParse(valorFiltro, out double SueldoHora))
             {
-                ListaTecnicos = tecnicosServices.Listar(t => t.SueldoHora == SueldoHora);
+                ListaTecnicos = tecnicosService.Listar(t => t.SueldoHora == SueldoHora);
             }
         }
         else
         {
-            ListaTecnicos = tecnicosServices.Listar(t => true);
+            ListaTecnicos = tecnicosService.Listar(t => true);
         }
     }
 }
