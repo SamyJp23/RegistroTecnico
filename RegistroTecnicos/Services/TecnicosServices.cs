@@ -20,7 +20,7 @@ namespace RegistroTecnicos.Services
                 .AnyAsync(p => p.IdTecnico == idTecnico);
         }
 
-        public async Task<bool> Insertar(Tecnicos tecnicos)
+        private async Task<bool> Insertar(Tecnicos tecnicos)
         {
 
             _context.Tecnicos.Add(tecnicos);
