@@ -97,10 +97,9 @@
         }
     }
 
-
-    public void Guardar()
+    public async Task Guardar()
     {
-        if (Validar())
+        if (await Validar())
         {
             AlertaError();
             MostrarNotificacion();
@@ -108,20 +107,29 @@
         }
         else
         {
-            var guardar = tecnicosService.Guardar(Tecnicos);
-            AlertaGuardado();
-            MostrarNotificacion();
-            Nuevo();
+            var guardar = await tecnicosService.Guardar(Tecnicos);
+            if (guardar)
+            {
+                AlertaGuardado();
+                MostrarNotificacion();
+                Nuevo();
+            }
+            else
+            {
+                AlertaError();
+                MostrarNotificacion();
+            }
+
         }
     }
     public void Nuevo()
     {
         this.Tecnicos = new Tecnicos();  
     }
-    public bool Validar()
+    public async Task<bool> Validar()
     {
-        Existe = (tecnicosService.Listar(t => t.Nombre!.ToLower() == Tecnicos.Nombre!.ToLower() && t.IdTecnico != Tecnicos.IdTecnico).Any());
-        return Existe;
+        bool existeNombre = await tecnicosService.ExisteNombre(Tecnicos.Nombre, Tecnicos.IdTecnico);
+        return existeNombre;
     }
   
 
