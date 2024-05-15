@@ -35,7 +35,11 @@ namespace RegistroTecnicos.Services
 
         public async Task<bool> Guardar(Tecnicos tecnicos)
         {
-            if (!await Existe(tecnicos.IdTecnico))
+            if (await ExisteNombre(tecnicos.Nombre, tecnicos.IdTecnico))
+            {
+                return false;
+            }
+                if (!await Existe(tecnicos.IdTecnico))
                 return await Insertar(tecnicos);
             else
             {
@@ -65,6 +69,18 @@ namespace RegistroTecnicos.Services
                 .Where(criterio)
                 .ToList();
         }
+        public async Task<bool> ExisteNombre(string nombre, int? idTecnico = null)
+        {
+            if (idTecnico.HasValue)
+            {
+                return await _context.Tecnicos.AnyAsync(t => t.Nombre == nombre && t.IdTecnico != idTecnico);
+            }
+            else
+            {
+                return await _context.Tecnicos.AnyAsync(t => t.Nombre == nombre);
+            }
+        }
+
 
 
     }
