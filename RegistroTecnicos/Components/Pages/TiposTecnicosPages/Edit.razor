@@ -40,6 +40,7 @@
     </div>
 </EditForm>
 @code {
+    [Parameter]
     public int TipoId { get; set; }
     TiposTecnicos TiposTecnicos { get; set; } = new TiposTecnicos();
     public bool Existe { get; set; } = false;
