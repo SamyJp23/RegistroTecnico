@@ -12,7 +12,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="IdTecnico" class="form-label">Id:</label>
+                    <label for="IdTipo" class="form-label">Id:</label>
                     <div class="input-group">
                         <div style="width: 40%; height: 1em;">
                             <InputNumber @bind-Value="TiposTecnicos.TipoTecnicoId" class="form-control" style="font-size: 0.8em;" aria-describedby="BotonBuscar" />
@@ -22,7 +22,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="Nombre" class="form-label">Nombre:</label>
+                <label for="Descripcion" class="form-label">Descripci&oacute;n:</label>
                 <InputText @bind-Value="TiposTecnicos.Descripcion" class="form-control" />
                 <ValidationMessage For="@(() => TiposTecnicos.Descripcion)" />
             </div>
