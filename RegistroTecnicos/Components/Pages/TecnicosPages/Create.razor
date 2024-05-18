@@ -1,10 +1,11 @@
 ﻿@page "/Tecnico/Create"
 @page "/Tecnico/Create/{TecnicoId:int}"
 @inject TecnicosServices tecnicosService
+@inject TiposTecnicosServices tiposTecnicosService
 @rendermode InteractiveServer
 
 <EditForm Model="Tecnicos" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
+     <DataAnnotationsValidator />
     @*Alerta Guardado*@
     <Alert Color="@alertColorGuardo" Dismissable="false" Hidden="@(!mostrarNotificacion)">
         <Icon Name="@alertIconNameGuardo" class="me-2"></Icon>@alertaGuardo
@@ -32,7 +33,12 @@
                     @*Seleccionar tipo de tecnico*@
                     <div class="col-md-3 mb-3">
                         <label for="TipoTecnico" class="form-label">Seleccione el tipo de técnico:</label>
-                        <select @bind="filtro" class="form-select">
+                        <select @bind="TipoSeleccionado" class="form-select">
+                        @foreach (var tipoTecnico in ListaTiposTecnicos)
+                        {
+                             <option value="@tipoTecnico.TipoTecnicoId">@tipoTecnico.Descripcion</option>
+                        }
+                        
                         </select>
                     </div>
                </div
@@ -69,11 +75,24 @@
     public int? tecnicoId { get; set; }
     public bool Existe { get; set; } = false;
     public bool mostrarNotificacion = false;
+    public List<TiposTecnicos> ListaTiposTecnicos = new List<TiposTecnicos>();
     AlertColor alertColorGuardo,alertColorError;
     IconName alertIconNameError, alertIconNameGuardo;
     string alertaGuardo , alertaError = "";
     private string filtro = "Id";
+    public int TipoSeleccionado { get; set; }
 
+
+
+    protected override void OnInitialized()
+    {
+        ListaTiposTecnicos = tiposTecnicosService.Listar(c => true);
+
+        if (tecnicoId.HasValue)
+        {
+            Tecnicos.IdTecnico = tecnicoId.Value;
+        }
+    }
     public async Task MostrarNotificacion()
     {
         mostrarNotificacion = true;
@@ -96,16 +115,10 @@
         alertaError = "Ya existe un técnico registrado con ese nombre.";
 
     }
-    protected override void OnInitialized()
-    {
-        if (tecnicoId.HasValue)
-        {
-            Tecnicos.IdTecnico = tecnicoId.Value;
-        }
-    }
 
     public async Task Guardar()
     {
+        Tecnicos.TipoTecnicoId = TipoSeleccionado;
         if (await Validar())
         {
             AlertaError();
