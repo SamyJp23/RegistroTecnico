@@ -1,9 +1,9 @@
 ﻿@page "/TiposTecnicos/Create"
 @page "/TiposTecnicos/Create/{TipoId:int}"
-@inject TecnicosServices tecnicosService
+@inject TiposTecnicosServices tipoTecnicosService
 @rendermode InteractiveServer
 
-<EditForm Model="Tecnicos" OnValidSubmit="Guardar">
+<EditForm Model="TiposTecnicos" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
    <div class="card shadow-lg border-0 rounded" style="background-color: #f8f9fa;">
         <div class="card-header bg-primary text-white" style="text-align: center;">
@@ -16,8 +16,8 @@
                     <label for="IdTipo" class="form-label">IdTipo:</label>
                     <div class="input-group">
                         <div style="width: 40%; height: 1em;">
-                            <InputNumber @bind-Value="Tecnicos.IdTecnico" class="form-control" style="font-size: 0.8em;" aria-describedby="BotonBuscar" />
-                            <ValidationMessage For="@(() => Tecnicos.IdTecnico)" />
+                            <InputNumber @bind-Value="TiposTecnicos.TipoTecnicoId" class="form-control" style="font-size: 0.8em;" aria-describedby="BotonBuscar" />
+                            <ValidationMessage For="@(() => TiposTecnicos.TipoTecnicoId)" />
                         </div>
                     </div>
                 </div>
@@ -25,8 +25,8 @@
             @* Descripcion *@
             <div class="mb-3">
                 <label for="Descripcion" class="form-label">Descripci&oacute;n:</label>
-                <InputText @bind-Value="Tecnicos.Nombre" class="form-control" />
-                <ValidationMessage For="@(() => Tecnicos.Nombre)" />
+                <InputText @bind-Value="TiposTecnicos.Descripcion" class="form-control" />
+                <ValidationMessage For="@(() => TiposTecnicos.Descripcion)" />
            </div>          
         </div>
     </div>
@@ -37,7 +37,7 @@
             @*Boton Guardar*@
             <button type="submit" class="btn btn-outline-success ml-2"><span class="bi bi-check-circle-fill"></span> Guardar </button>
             @*Boton Retroceder*@
-            <a type="button" href="/Tecnico/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Retroceder </a>
+            <a type="button" href="/TiposTecnicos/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Retroceder </a>
         </div>
     </div>
 </EditForm>
@@ -45,15 +45,48 @@
 @code {
     [Parameter]
     public int TipoId { get; set; }
+    public int? tipotecnicoId { get; set; }
 
-    public Tecnicos Tecnicos { get; set; } = new Tecnicos();
+    public TiposTecnicos TiposTecnicos { get; set; } = new TiposTecnicos();
 
+
+    protected override void OnInitialized()
+    {
+        if (tipotecnicoId.HasValue)
+        {
+            TiposTecnicos.TipoTecnicoId = tipotecnicoId.Value;
+        }
+    }
     public void Nuevo()
     {
 
     }
-    public void Guardar()
+   
+
+    public async Task Guardar()
     {
-        
+        if (await Validar())
+        {
+            return;
+        }
+        else
+        {
+            var guardar = await tipoTecnicosService.Guardar(TiposTecnicos);
+            if (guardar)
+            {
+               
+                Nuevo();
+            }
+            else
+            {
+                
+            }
+
+        }
+    }
+    public async Task<bool> Validar()
+    {
+        bool existeDescripcion = await tipoTecnicosService.ExisteDescripcion(TiposTecnicos.Descripcion, TiposTecnicos.TipoTecnicoId);
+        return existeDescripcion;
     }
 }
