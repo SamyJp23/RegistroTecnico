@@ -35,7 +35,7 @@ namespace RegistroTecnicos.Services
 
         public async Task<bool> Guardar(TiposTecnicos tiposTecnicos)
         {
-            if (await ExisteNombre(tiposTecnicos.Descripcion, tiposTecnicos.TipoTecnicoId))
+            if (await ExisteDescripcion(tiposTecnicos.Descripcion, tiposTecnicos.TipoTecnicoId))
             {
                 return false;
             }
@@ -69,7 +69,7 @@ namespace RegistroTecnicos.Services
                 .Where(criterio)
                 .ToList();
         }
-        public async Task<bool> ExisteNombre(string descripcion, int? idTipoTecnico = null)
+        public async Task<bool> ExisteDescripcion(string descripcion, int? idTipoTecnico = null)
         {
             if (idTipoTecnico.HasValue)
             {
