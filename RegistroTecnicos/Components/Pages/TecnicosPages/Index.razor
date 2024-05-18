@@ -17,6 +17,7 @@
                     <option value="id">ID</option>
                     <option value="nombre">Nombre</option>
                     <option value="sueldo">Sueldo</option>
+                    <option value="tipo">Tipo</option>
                 </select>
             </div>
 
@@ -59,7 +60,7 @@
                     <td>@tecnico.IdTecnico</td>
                     <td>@tecnico.Nombre</td>
                     <td>@tecnico.SueldoHora</td>
-                    <td>@tecnico.TipoTecnico</td>
+                    <td>@tecnico.TipoTecnico?.Descripcion</td>
                     <td>
 
                         @*Boton Details*@
@@ -97,6 +98,7 @@
     }
     public void Buscar()
     {
+
         if (valorFiltro.Trim() != "")
         {
             if (filtro == "id" && int.TryParse(valorFiltro, out int IdTecnico))
@@ -105,11 +107,15 @@
             }
             else if (filtro == "nombre")
             {
-                ListaTecnicos = tecnicosService.Listar(t => t.Nombre == valorFiltro);
+                ListaTecnicos = tecnicosService.Listar(t => t.Nombre.Contains(valorFiltro, StringComparison.OrdinalIgnoreCase));
             }
-            else if (filtro == "sueldohora" && double.TryParse(valorFiltro, out double SueldoHora))
+            else if (filtro == "sueldo" && double.TryParse(valorFiltro, out double SueldoHora))
             {
                 ListaTecnicos = tecnicosService.Listar(t => t.SueldoHora == SueldoHora);
+            }
+            else if (filtro == "tipo" && int.TryParse(valorFiltro, out int TipoTecnicoId))
+            {
+                ListaTecnicos = tecnicosService.Listar(t => t.TipoTecnicoId == TipoTecnicoId);
             }
         }
         else
