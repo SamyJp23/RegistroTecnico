@@ -67,6 +67,7 @@ namespace RegistroTecnicos.Services
             return _context.Tecnicos
                 .Include(t => t.TipoTecnico)
                 .AsNoTracking()
+                .Where(criterio)
                 .ToList();
         }
         public async Task<bool> ExisteNombre(string nombre, int? idTecnico = null)
