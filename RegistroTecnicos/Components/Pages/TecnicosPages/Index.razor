@@ -99,7 +99,7 @@
     public void Buscar()
     {
 
-        if (valorFiltro.Trim() != "")
+        if (!string.IsNullOrWhiteSpace(valorFiltro))
         {
             if (filtro == "id" && int.TryParse(valorFiltro, out int IdTecnico))
             {
@@ -107,7 +107,8 @@
             }
             else if (filtro == "nombre")
             {
-                ListaTecnicos = tecnicosService.Listar(t => t.Nombre.Contains(valorFiltro, StringComparison.OrdinalIgnoreCase));
+                string lowerCaseValorFiltro = valorFiltro.ToLower();
+                ListaTecnicos = tecnicosService.Listar(t => t.Nombre.ToLower().Contains(lowerCaseValorFiltro));
             }
             else if (filtro == "sueldo" && double.TryParse(valorFiltro, out double SueldoHora))
             {
@@ -116,6 +117,10 @@
             else if (filtro == "tipo" && int.TryParse(valorFiltro, out int TipoTecnicoId))
             {
                 ListaTecnicos = tecnicosService.Listar(t => t.TipoTecnicoId == TipoTecnicoId);
+            }
+            else
+            {
+                ListaTecnicos = new List<Tecnicos>();
             }
         }
         else
