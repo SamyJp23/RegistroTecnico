@@ -107,8 +107,8 @@
             }
             else if (filtro == "nombre")
             {
-                string lowerCaseValorFiltro = valorFiltro.ToLower();
-                ListaTecnicos = tecnicosService.Listar(t => t.Nombre.ToLower().Contains(lowerCaseValorFiltro));
+                string filtroMinuscula = valorFiltro.ToLower();
+                ListaTecnicos = tecnicosService.Listar(t => t.Nombre.ToLower().Contains(filtroMinuscula));
             }
             else if (filtro == "sueldo" && double.TryParse(valorFiltro, out double SueldoHora))
             {
@@ -116,7 +116,8 @@
             }
             else if (filtro == "tipo" && int.TryParse(valorFiltro, out int TipoTecnicoId))
             {
-                ListaTecnicos = tecnicosService.Listar(t => t.TipoTecnicoId == TipoTecnicoId);
+                string filtroMinuscula = valorFiltro.ToLower();
+                ListaTecnicos = tecnicosService.Listar(t => t.TipoTecnico.Descripcion.ToLower().Contains(filtroMinuscula));
             }
             else
             {
