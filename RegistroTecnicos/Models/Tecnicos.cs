@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace RegistroTecnicos.Models
-{
+
+namespace RegistroTecnicos.Models;
     public class Tecnicos
     {
         [Key]
@@ -17,4 +17,4 @@ namespace RegistroTecnicos.Models
 
 
     }
-}
+
