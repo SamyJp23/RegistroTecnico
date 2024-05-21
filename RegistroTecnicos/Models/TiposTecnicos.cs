@@ -1,7 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
-namespace RegistroTecnicos.Models
-{
+namespace RegistroTecnicos.Models;
     public class TiposTecnicos
     {
 
@@ -13,4 +12,4 @@ namespace RegistroTecnicos.Models
         public string Descripcion { get; set; }
         public ICollection<Tecnicos> Tecnicos { get; set; }
     }
-}
+
