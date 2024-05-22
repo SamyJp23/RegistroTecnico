@@ -1,5 +1,8 @@
-﻿<h3>Index</h3>
+﻿@page "/Incentivo/Index"
+@page "/Incentivo/Index/{IncentivoId:int}"
+
 
 @code {
-
+    [Parameter]
+    public int IncentivoId{ get; set; }
 }
