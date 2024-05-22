@@ -1,5 +1,8 @@
-﻿<h3>Delete</h3>
+﻿@page "/Incentivo/Delete"
+@page "/Incentivo/Delete/{IncentivoId:int}"
+
 
 @code {
-
+    [Parameter]
+    public int IncentivoId { get; set; }
 }
