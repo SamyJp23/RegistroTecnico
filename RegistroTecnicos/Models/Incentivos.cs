@@ -17,7 +17,7 @@ namespace RegistroTecnicos.Models;
     public DateTime Fecha { get; set; }
 
 
-    //Relacion entre la tabla tecnicos e incentivos
+    
     public int TecnicoId { get; set; }
     public Tecnicos Tecnicos { get; set; }
 
