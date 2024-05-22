@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace RegistroTecnicos.Models
-{
+
+namespace RegistroTecnicos.Models;
     public class Tecnicos
     {
         [Key]
@@ -10,5 +10,11 @@ namespace RegistroTecnicos.Models
         public string? Nombre { get; set; }
         [Range(0.01, double.MaxValue, ErrorMessage = "El campo sueldo por hora debe ser mayor que cero.")]
         public double SueldoHora { get; set; }
+
+
+        public int TipoTecnicoId { get; set; }
+        public TiposTecnicos TipoTecnico { get; set; }
+
+
     }
-}
+
