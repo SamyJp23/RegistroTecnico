@@ -22,6 +22,7 @@ builder.Services.AddDbContext<Contexto>(Options => Options.UseSqlite(ConStr));
 
 builder.Services.AddScoped<TecnicosServices>();
 builder.Services.AddScoped<TiposTecnicosServices>();
+builder.Services.AddScoped<IncentivosServices>();
 
 var app = builder.Build();
 

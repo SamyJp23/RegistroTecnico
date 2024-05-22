@@ -35,7 +35,7 @@ public class IncentivosServices
 
     public async Task<bool> Guardar(Incentivos incentivo)
     {
-        if (await ExisteNombre(incentivo.Descripcion, incentivo.IncentivoId))
+        if (await ExisteDescripcion(incentivo.Descripcion, incentivo.IncentivoId))
         {
             return false;
         }
@@ -62,10 +62,9 @@ public class IncentivosServices
             .FirstOrDefaultAsync(i => i.IncentivoId == id);
     }
 
-    public List<Incentivos> Listar(Expression<Func<Tecnicos, bool>> criterio)
+    public List<Incentivos> Listar(Expression<Func<Incentivos, bool>> criterio)
     {
         return _context.Incentivos
-            .Include(i => i.IncentivoId)
             .AsNoTracking()
             .Where(criterio)
             .ToList();

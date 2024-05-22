@@ -15,6 +15,8 @@ namespace RegistroTecnicos.Models;
         public int TipoTecnicoId { get; set; }
         public TiposTecnicos TipoTecnico { get; set; }
 
+     public ICollection<Incentivos> Incentivos { get; set; } = new List<Incentivos>();
 
-    }
+
+}
 

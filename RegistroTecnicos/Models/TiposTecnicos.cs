@@ -10,6 +10,7 @@ namespace RegistroTecnicos.Models;
 
         [Required(ErrorMessage = "La descripción es obligatoria.")]
         public string Descripcion { get; set; }
+        public decimal Incentivo { get; set; }
         public ICollection<Tecnicos> Tecnicos { get; set; }
     }
 
