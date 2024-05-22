@@ -1,6 +1,62 @@
 ﻿@page "/Incentivo/Create"
 @page "/Incentivo/Create{IncentivoId:int}"
+
+<EditForm Model="Incentivos" OnValidSubmit="Guardar">
+     <DataAnnotationsValidator />
+    <div class="card shadow-lg border-0 rounded" style="background-color: #f8f9fa;">
+        <div class="card-header bg-primary text-white" style="text-align: center;">
+            <h3> <i class="fas fa-clipboard-list"></i> Registro de T&eacute;cnicos</h3>
+        </div>
+        <div class="card-body">
+                @*TecnicoId*@
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="TecnicoId" class="form-label">TecnicoId:</label>
+                        <div class="input-group">
+                            <div style="width: 40%; height: 1em;">
+                                <InputNumber @bind-Value="Incentivos.IncentivoId" class="form-control" style="font-size: 0.8em;" aria-describedby="BotonBuscar" />
+                                <ValidationMessage For="@(() => Incentivos.IncentivoId)" />
+                            </div>
+                        </div>
+                    </div>
+               </div
+
+            @* Nombre *@
+           <div class="mb-3">
+                    <label for="Nombre" class="form-label">Nombre:</label>
+                    <InputText @bind-Value="Incentivos.Descripcion" class="form-control" />
+                <ValidationMessage For="@(() => Incentivos.Descripcion)" />
+          </div>
+            @* Sueldo Por Hora *@
+            <div class="mb-3">
+                <label for="SueldoHora" class="form-label">Sueldo por Hora:</label>
+                <InputNumber @bind-Value="Incentivos.CantidadIncentivos" class="form-control" />
+                <ValidationMessage For="@(() => Incentivos.CantidadIncentivos)" />
+            </div>
+        </div>
+     </div>
+         <div class="card-footer bg-light d-flex justify-content-center mt-3">
+             <div class="btn-group">
+                @*Boton Nuevo*@
+                <button type="button" class="btn btn-outline-primary ml-2" @onclick="Nuevo"><span class="bi bi-plus"></span> Nuevo </button>
+                @*Boton Guardar*@
+                <button type="submit" class="btn btn-outline-success ml-2"><span class="bi bi-check-circle-fill"></span> Guardar </button>
+                @*Boton Retroceder*@
+                <a type="button" href="/Tecnico/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Retroceder </a>
+            </div>
+         </div>
+    </EditForm>
 @code {
     [Parameter]
     public int IncentivoId {get;set;}
+    public Incentivos Incentivos { get; set; } = new Incentivos();
+
+    public void Guardar()
+    {
+
+    }
+    public void Nuevo()
+    {
+        
+    }
 }
