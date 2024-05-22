@@ -1,6 +1,7 @@
 ﻿using RegistroTecnicos.DAL;
 using RegistroTecnicos.Models;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace RegistroTecnicos.Services;
 
@@ -54,7 +55,7 @@ public class IncentivosServices
         return incentivos > 0;
     }
 
-    public async Task<Tecnicos?> Buscar(int id)
+    public async Task<Incentivos?> Buscar(int id)
     {
         return await _context.Incentivos
             .AsNoTracking()
@@ -69,7 +70,7 @@ public class IncentivosServices
             .Where(criterio)
             .ToList();
     }
-    public async Task<bool> ExisteNombre(string descripcion, int? idIncentivo = null)
+    public async Task<bool> ExisteDescripcion(string descripcion, int? idIncentivo = null)
     {
         if (idIncentivo.HasValue)
         {
