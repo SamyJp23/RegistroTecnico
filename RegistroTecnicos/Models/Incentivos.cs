@@ -21,5 +21,5 @@ namespace RegistroTecnicos.Models;
     public int TecnicoId { get; set; }
     public Tecnicos Tecnicos { get; set; }
 
-    }
+}
 
