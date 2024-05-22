@@ -20,6 +20,15 @@ public class Contexto : DbContext
             .WithMany(t => t.Tecnicos)
             .HasForeignKey(t => t.TipoTecnicoId);
 
+        modelBuilder.Entity<Incentivos>()
+           .HasOne(i => i.Tecnicos)
+           .WithMany(t => t.Incentivos)
+           .HasForeignKey(i => i.TecnicoId);
+
+        modelBuilder.Entity<TiposTecnicos>()
+            .Property(tt => tt.Incentivo)
+            .HasDefaultValue(0);
+
         base.OnModelCreating(modelBuilder);
     }
 
