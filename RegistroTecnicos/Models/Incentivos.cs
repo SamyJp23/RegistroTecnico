@@ -12,10 +12,14 @@ namespace RegistroTecnicos.Models;
     [Range(1, int.MaxValue, ErrorMessage = "La Cantidad de servicios debe ser mayor a 0.")]
     public int CantidadServicios { get; set; }
     [Required(ErrorMessage = "El campo Monto es obligatorio.")]
-    public int Monto { get; set; }
+    public decimal Monto { get; set; }
 
     public DateTime Fecha { get; set; }
 
+
+    //Relacion entre la tabla tecnicos e incentivos
     public int TecnicoId { get; set; }
+    public Tecnicos Tecnicos { get; set; }
+
     }
 
