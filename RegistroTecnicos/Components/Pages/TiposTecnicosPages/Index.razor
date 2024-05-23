@@ -57,23 +57,24 @@
                 <tr>
                     <td>@tipoTecnico.TipoTecnicoId</td>
                     <td>@tipoTecnico.Descripcion</td>
-                    <td>
+                    <td>@tipoTecnico.Incentivo</td>
 
-                        @*Boton Detalles*@
+                       
+                    
+                    <td>@*Boton Detalles*@
                         <a href="/TipoTecnico/Details/@tipoTecnico.TipoTecnicoId" style="border: none; background-color: transparent;" class="btn-detalle">
                             <span class="bi bi-info-circle-fill" style="font-size: 2rem;"></span>
                         </a>
-
                     </td>
                     <td>
-                        @*Boton Editar*@
+                        @* Botón Editar *@
                         <a href="/TipoTecnico/Edit/@tipoTecnico.TipoTecnicoId" style="border: none; background-color: transparent;" class="btn-editar">
                             <span class="bi bi-marker-tip" style="font-size: 2rem;"></span>
                         </a>
                     </td>
 
                     <td>
-                        @*Boton Eliminar*@
+                        @* Botón Eliminar *@
                         <a href="/TipoTecnico/Delete/@tipoTecnico.TipoTecnicoId" style="border: none; background-color: transparent;" class="btn-eliminar">
                             <span class="bi bi-dash-circle-fill" style="font-size: 2rem;"></span>
                         </a>
