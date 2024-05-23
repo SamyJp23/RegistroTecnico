@@ -45,6 +45,9 @@
             <tr>
                 <th>Id</th>
                 <th>Descripción</th>
+                <th>Fecha</th>
+                <th>CantidadServicios</th>
+                <th>Monto</th>
                 <th>Ver</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
@@ -55,8 +58,11 @@
             @foreach (var incentivo in ListaIncentivos)
             {
                 <tr>
-                    <td>@incentivo.TecnicoId</td>
+                    <td>@incentivo.IncentivoId</td>
                     <td>@incentivo.Descripcion</td>
+                    <td>@incentivo.Fecha</td>
+                    <td>@incentivo.CantidadServicios</td>
+                    <td>@incentivo.Monto</td>
                     <td>
 
                         @*Boton Detalles*@
