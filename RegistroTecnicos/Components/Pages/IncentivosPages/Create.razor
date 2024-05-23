@@ -27,6 +27,12 @@
                     <InputText @bind-Value="Incentivos.Descripcion" class="form-control" />
                 <ValidationMessage For="@(() => Incentivos.Descripcion)" />
           </div>
+           @*Seleccionar tipo de tecnico*@
+                    <div class="col-md-3 mb-3">
+                        <label for="TipoTecnico" class="form-label">Seleccione el tipo de técnico:</label>
+                        <select @bind="TipoSeleccionado" class="form-select">
+                            </select>
+                    </div>
            @* Fecha *@
            <div class="mb-3">
                     <label for="Fecha" class="form-label">Fecha:</label>
@@ -54,7 +60,7 @@
                 @*Boton Guardar*@
                 <button type="submit" class="btn btn-outline-success ml-2"><span class="bi bi-check-circle-fill"></span> Guardar </button>
                 @*Boton Retroceder*@
-                <a type="button" href="/Tecnico/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Retroceder </a>
+                <a type="button" href="/Incentivo/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Retroceder </a>
             </div>
          </div>
     </EditForm>
@@ -62,6 +68,7 @@
     [Parameter]
     public int IncentivoId {get;set;}
     public Incentivos Incentivos { get; set; } = new Incentivos();
+    public int TipoSeleccionado{ get; set; }
 
     public void Guardar()
     {
