@@ -1,5 +1,8 @@
 ﻿@page "/Incentivo/Create"
 @page "/Incentivo/Create{IncentivoId:int}"
+@inject IncentivosServices incentivoService
+@inject TecnicosServices tecnicosService
+@inject TiposTecnicosServices tiposTecnicosService
 @rendermode InteractiveServer
 
 <EditForm Model="Incentivos" OnValidSubmit="Guardar">
@@ -28,29 +31,37 @@
                     <InputText @bind-Value="Incentivos.Descripcion" class="form-control" />
                 <ValidationMessage For="@(() => Incentivos.Descripcion)" />
           </div>
-           @*Seleccionar tipo de tecnico*@
-                    <div class="col-md-3 mb-3">
-                        <label for="TipoTecnico" class="form-label">Seleccione el tipo de técnico:</label>
-                        <select @bind="TipoSeleccionado" class="form-select">
-                            </select>
-                    </div>
+       
            @* Fecha *@
            <div class="mb-3">
                     <label for="Fecha" class="form-label">Fecha:</label>
-                    <InputText @bind-Value="Incentivos.Descripcion" class="form-control" />
-                <ValidationMessage For="@(() => Incentivos.Descripcion)" />
+                    <InputDate @bind-Value="Incentivos.Fecha" class="form-control" />
+                <ValidationMessage For="@(() => Incentivos.Fecha)" />
           </div>
+           @*Seleccionar Incentivo*@
+                    <div class="col-md-3 mb-3">
+                        <label for="Tecnico" class="form-label">Seleccione el Tecnico:</label>
+                        <select @bind="TipoSeleccionado" class="form-select">
+                        @foreach (var tecnico in ListaTecnicos)
+                        {
+                             <option value="@tecnico.IdTecnico">@tecnico.Nombre</option>
+                        }
+                        
+                        </select>
+                    </div>
+
             @* Cantidad de Servicios*@
             <div class="mb-3">
                 <label for="CantidadServicios" class="form-label">Cantidad de Servicios:</label>
                 <InputNumber @bind-Value="Incentivos.CantidadServicios" class="form-control" />
                 <ValidationMessage For="@(() => Incentivos.CantidadServicios)" />
             </div>
+            
              @* Monto *@
             <div class="mb-3">
                 <label for="Monto" class="form-label">Monto:</label>
-                <InputNumber @bind-Value="Incentivos.CantidadServicios" class="form-control" />
-                <ValidationMessage For="@(() => Incentivos.CantidadServicios)" />
+                <InputNumber @bind-Value="Incentivos.Monto" class="form-control" />
+                <ValidationMessage For="@(() => Incentivos.Monto)" />
             </div>
         </div>
      </div>
@@ -70,13 +81,49 @@
     public int IncentivoId {get;set;}
     public Incentivos Incentivos { get; set; } = new Incentivos();
     public int TipoSeleccionado{ get; set; }
+    public List<Incentivos> ListaIncentivos = new List<Incentivos>();
+     public List<TiposTecnicos> ListaTiposTecnicos = new List<TiposTecnicos>();
+    public int? incentivoId { get; set; }
+    public List<Tecnicos> ListaTecnicos = new List<Tecnicos>();
 
-    public void Guardar()
+
+     protected override void OnInitialized()
     {
+        ListaTecnicos = tecnicosService.Listar(c => true);
+        ListaIncentivos = incentivoService.Listar(c => true);
 
+        if (incentivoId.HasValue)
+        {
+            Incentivos.IncentivoId = incentivoId.Value;
+        }
     }
-    public void Nuevo()
+    public async Task Guardar()
     {
-        
+       Incentivos.TecnicoId = TipoSeleccionado;
+
+    if (await Validar())
+    {
+        return;
+    }
+    else
+    {
+        var guardar = await incentivoService.Guardar(Incentivos);
+        if (guardar)
+        {
+            ListaTiposTecnicos = tiposTecnicosService.Listar(c => true);
+            StateHasChanged();
+            Nuevo();
+        }
+    }
+    }
+    public async Task Nuevo()
+    {
+        this.Incentivos = new Incentivos();  
+    }
+     public async Task<bool> Validar()
+    {
+        bool existeDescripcion = await incentivoService.ExisteDescripcion(Incentivos.Descripcion, Incentivos.IncentivoId);
+        return existeDescripcion;
     }
 }
+
