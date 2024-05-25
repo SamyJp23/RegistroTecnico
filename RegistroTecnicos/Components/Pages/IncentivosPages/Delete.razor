@@ -1,8 +1,89 @@
 ﻿@page "/Incentivo/Delete"
 @page "/Incentivo/Delete/{IncentivoId:int}"
+@inject IncentivosServices incentivosService
+@inject NavigationManager navigationManager
+@inject NotificationService NotificationService
+@rendermode InteractiveServer
 
+<PageTitle>Eliminar Incentivo</PageTitle>
+@if (Incentivos != null)
+{
+    <div class="container">
+        <div class="card shadow-header">
+
+            <div class="card-header  bg-primary text-white text-center py-2 rounded">
+                <h3><strong>Eliminar T&eacute;cnico</strong></h3>
+            </div>
+            <div class="card-header">
+                <h3 class="text-danger">¿Estás seguro de que quieres eliminar el siguiente t&eacute;cnico?</h3>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card shadow-lg">
+                            <div class="card-header">
+                                <h3 class="text-center"><strong>Datos del t&eacute;cnico</strong></h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="border-primary border-2 borde">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>IncentivoId:</strong> @Incentivos.IncentivoId</li>
+                                                    <li><strong>Descripcion:</strong> @Incentivos.Descripcion</li>
+                                                    <li><strong>Fecha:</strong> @Incentivos.Fecha.ToShortDateString()</li>
+                                                    <li><strong>Cantidad de Servicios:</strong> @Incentivos.CantidadServicios</li>
+                                                    <li><strong>Tecnico:</strong> @Incentivos.TecnicoId</li>
+                                                    <li><strong>Monto:</strong> @Incentivos.Monto</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                @*Boton Eliminar*@
+                <button type="button" class="btn btn-outline-danger" @onclick="EliminarIncentivo"><i class="bi bi-trash-fill"></i> Eliminar</button>
+                @*Boton Volver*@
+                <button type="button" class="btn btn-outline-primary" @onclick="Volver"><i class="bi bi-box-arrow-left"></i> Volver</button>
+            </div>
+
+        </div>
+    </div>
+}
+else
+{
+    <p>T&eacute;cnico no encontrado.</p>
+}
 
 @code {
     [Parameter]
     public int IncentivoId { get; set; }
+    public Incentivos? Incentivos { get; set; } = new Incentivos();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (IncentivoId != 0)
+        {
+            Incentivos = await incentivosService.Buscar(IncentivoId);
+        }
+    }
+
+    public async Task EliminarIncentivo()
+    {
+        var eliminado = await incentivosService.Eliminar(Incentivos.IncentivoId);
+        Volver();
+    }
+
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Incentivo/Index");
+    }
 }
