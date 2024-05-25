@@ -1,8 +1,115 @@
 ﻿@page "/Incentivo/Edit"
 @page "/Incentivo/Edit/{IncentivoId:int}"
+@inject IncentivosServices incentivosService
+@rendermode InteractiveServer
+
+<EditForm Model="Incentivos" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card shadow-lg border-0 rounded" style="background-color: #f8f9fa;">
+        <div class="card-header bg-primary text-white" style="text-align: center;">
+            <h3> <i class="fas fa-clipboard-list"></i> Editar Incentivo</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+
+                    <label for="IdIncentivo" class="form-label">Id:</label>
+                    <div class="input-group">
+                        <div style="width: 40%; height: 1em;">
+                            <InputNumber @bind-Value="Incentivos.IncentivoId" class="form-control" style="font-size: 0.8em;" aria-describedby="BotonBuscar" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="Descripcion" class="form-label">Descripcion:</label>
+                <InputText @bind-Value="Incentivos.Descripcion" class="form-control" />
+                <ValidationMessage For="@(() => Incentivos.Descripcion)" />
+            </div>
+            <div class="mb-3">
+                <label for="Fecha" class="form-label">Fecha:</label>
+                <InputDate @bind-Value="Incentivos.Fecha" class="form-control" />
+                <ValidationMessage For="@(() => Incentivos.Fecha)" />
+            </div>
+            <div class="mb-3">
+                <label for="Cantidad" class="form-label">Cantidad de Servcios:</label>
+                <InputNumber @bind-Value="Incentivos.CantidadServicios" class="form-control" />
+                <ValidationMessage For="@(() => Incentivos.CantidadServicios)" />
+            </div>
+            <div class="mb-3">
+                <label for="Monto" class="form-label">Monto:</label>
+                <InputNumber @bind-Value="Incentivos.Monto" class="form-control" />
+                <ValidationMessage For="@(() => Incentivos.Monto)" />
+            </div>
+        </div>
+        <div class="card-footer bg-light d-flex justify-content-center mt-3">
+            <div class="btn-group">
+                @*Boton Nuevo*@
+                <button type="button" class="btn btn-outline-primary ml-2" @onclick="Nuevo"><span class="bi bi-plus"></span> Nuevo </button>
+                @*Boton Guardar*@
+                <button type="submit" class="btn btn-outline-success ml-2"><span class="bi bi-check-circle-fill"></span> Guardar </button>
+                @*Boton Retroceder*@
+                <a type="button" href="/Incentivo/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Retroceder </a>
+            </div>
+        </div>
+    </div>
+</EditForm>
 
 
 @code {
     [Parameter]
     public int IncentivoId { get; set; }
+    Incentivos Incentivos { get; set; } = new Incentivos();
+    public bool Existe { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (IncentivoId != 0)
+        {
+            await Buscar();
+        }
+    }
+    public async Task Buscar()
+    {
+        Existe = false;
+        var encontro = await incentivosService.Buscar(IncentivoId);
+
+        if (encontro != null)
+        {
+            Incentivos = encontro;
+        }
+        else
+        {
+            Nuevo();
+        }
+    }
+
+    public async Task Guardar()
+    {
+        if (Validar())
+        {
+            return;
+        }
+
+        var guardo = await incentivosService.Guardar(Incentivos);
+        if (guardo)
+        {
+            Nuevo();
+        }
+    }
+
+    public void Nuevo()
+    {
+        Incentivos = new Incentivos();
+        Existe = false;
+    }
+
+    public bool Validar()
+    {
+        Existe = incentivosService.Listar(i => i.Descripcion!.ToLower() == Incentivos.Descripcion!.ToLower() && i.IncentivoId != Incentivos.IncentivoId).Any();
+        return Existe;
+    }
+
+
 }

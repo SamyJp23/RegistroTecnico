@@ -1,8 +1,59 @@
 ﻿@page "/Incentivo/Details"
 @page "/Incentivo/Details/{IncentivoId:int}"
+@inject IncentivosServices incentivosService
+@inject NavigationManager navigationManager
+
+@rendermode InteractiveServer
+
+<PageTitle>Detalles del Incentivo</PageTitle>
+@if (Incentivos != null)
+{
+    <div class="container">
+        <div class="card shadow-header">
+            <div class="card-header  bg-primary text-white text-center py-2 rounded">
+                <h3 class="text-center"><strong>Detalles del t&eacute;cnico</strong></h3>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><strong>IncentivoId:</strong> @Incentivos.IncentivoId</li>
+                                <li><strong>Descripcion:</strong> @Incentivos.Descripcion</li>
+                                <li><strong>Fecha:</strong> @Incentivos.Fecha.ToShortDateString()</li>
+                                <li><strong>Tecnico:</strong> @Incentivos.TecnicoId</li>
+                                <li><strong>Cantidad de Servicios:</strong> @Incentivos.CantidadServicios</li>
+                                <li><strong>Monto:</strong> @Incentivos.Monto</li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-outline-primary" @onclick="Volver"><i class="bi bi-box-arrow-left"></i> Volver</button>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>T&eacute;cnico no encontrado.</p>
+}
 
 
 @code {
     [Parameter]
     public int IncentivoId { get; set; }
+    public Incentivos? Incentivos { get; set; } = new Incentivos();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Incentivos = await incentivosService.Buscar(IncentivoId);
+    }
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Incentivo/Index");
+    }
 }
