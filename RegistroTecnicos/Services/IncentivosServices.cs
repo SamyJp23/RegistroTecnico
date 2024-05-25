@@ -8,10 +8,13 @@ namespace RegistroTecnicos.Services;
 public class IncentivosServices
 {
     private readonly Contexto _context;
-
-    public IncentivosServices(Contexto contexto)
+    private readonly TiposTecnicosServices _tiposTecnicosService;
+    public List<TiposTecnicos> ListaTiposTecnicos { get; set; }
+    public IncentivosServices(Contexto contexto, TiposTecnicosServices tiposTecnicosService)
     {
         _context = contexto;
+         _tiposTecnicosService = tiposTecnicosService;
+        ListaTiposTecnicos = new List<TiposTecnicos>();
     }
 
     public async Task<bool> Existe(int idIncentivo)
@@ -24,11 +27,33 @@ public class IncentivosServices
     {
 
         _context.Incentivos.Add(incentivo);
-        return await _context.SaveChangesAsync() > 0;
-    }
 
+        if (incentivo.TecnicoId != null)
+        {
+            var tipoTecnico = await _context.TiposTecnicos.FindAsync(incentivo.TecnicoId);
+            if (tipoTecnico != null)
+            {
+                tipoTecnico.Incentivo += incentivo.Monto;
+            }
+        }
+
+        return await _context.SaveChangesAsync() > 0;
+
+
+    }
     private async Task<bool> Modificar(Incentivos incentivo)
     {
+        var incentivoOriginal = await _context.Incentivos.AsNoTracking().FirstOrDefaultAsync(i => i.IncentivoId == incentivo.IncentivoId);
+        if (incentivoOriginal != null)
+        {
+            var tipoTecnico = await _context.TiposTecnicos.FindAsync(incentivo.TecnicoId);
+            if (tipoTecnico != null)
+            {
+                tipoTecnico.Incentivo -= incentivoOriginal.Monto;
+                tipoTecnico.Incentivo += incentivo.Monto;
+            }
+        }
+
         _context.Update(incentivo);
         return await _context.SaveChangesAsync() > 0;
     }
@@ -39,12 +64,29 @@ public class IncentivosServices
         {
             return false;
         }
+        bool resultado;
         if (!await Existe(incentivo.IncentivoId))
-            return await Insertar(incentivo);
+        {
+            resultado = await Insertar(incentivo);
+        }
         else
         {
-            return await Modificar(incentivo);
+            resultado = await Modificar(incentivo);
         }
+        if (resultado)
+        {
+            var tiposTecnicos = await _context.TiposTecnicos.ToListAsync();
+            foreach (var tipoTecnico in tiposTecnicos)
+            {
+                tipoTecnico.Incentivo = await _context.Incentivos
+                    .Where(i => i.TecnicoId == tipoTecnico.TipoTecnicoId)
+                    .SumAsync(i => i.Monto);
+            }
+            await _context.SaveChangesAsync();
+            
+        }
+
+        return resultado;
     }
 
     public async Task<bool> Eliminar(int id)
@@ -81,3 +123,4 @@ public class IncentivosServices
         }
     }
 }
+
