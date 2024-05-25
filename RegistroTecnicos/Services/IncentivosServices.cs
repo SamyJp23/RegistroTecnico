@@ -91,10 +91,23 @@ public class IncentivosServices
 
     public async Task<bool> Eliminar(int id)
     {
-        var incentivos = await _context.Incentivos
-            .Where(i => i.IncentivoId == id)
-            .ExecuteDeleteAsync();
-        return incentivos > 0;
+        var incentivo = await _context.Incentivos.FirstOrDefaultAsync(i => i.IncentivoId == id);
+        if (incentivo == null)
+        {
+            return false;
+        }
+
+        _context.Incentivos.Remove(incentivo);
+
+        var tipoTecnico = await _context.TiposTecnicos.FindAsync(incentivo.TecnicoId);
+        if (tipoTecnico != null)
+        {
+            tipoTecnico.Incentivo -= incentivo.Monto;
+        }
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
     public async Task<Incentivos?> Buscar(int id)
