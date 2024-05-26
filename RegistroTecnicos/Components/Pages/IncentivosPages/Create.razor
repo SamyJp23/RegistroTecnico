@@ -7,6 +7,14 @@
 
 <EditForm Model="Incentivos" OnValidSubmit="Guardar">
      <DataAnnotationsValidator />
+ @*Alerta Guardado*@
+    <Alert Color="@alertColorGuardo" Dismissable="false" Hidden="@(!mostrarNotificacion)">
+        <Icon Name="@alertIconNameGuardo" class="me-2"></Icon>@alertaGuardo
+    </Alert>
+    @*Alerta Error al guardar*@
+    <Alert Color="@alertColorError" Dismissable="false" Hidden="@(!mostrarNotificacion)">
+        <Icon Name="@alertIconNameError" class="me-2"></Icon>@alertaError
+    </Alert>
     <div class="card shadow-lg border-0 rounded" style="background-color: #f8f9fa;">
         <div class="card-header bg-primary text-white" style="text-align: center;">
             <h3> <i class="fas fa-clipboard-list"></i> Registro de Incentivos</h3>
@@ -82,12 +90,16 @@
     public Incentivos Incentivos { get; set; } = new Incentivos();
     public int TipoSeleccionado{ get; set; }
     public List<Incentivos> ListaIncentivos = new List<Incentivos>();
-     public List<TiposTecnicos> ListaTiposTecnicos = new List<TiposTecnicos>();
+    public List<TiposTecnicos> ListaTiposTecnicos = new List<TiposTecnicos>();
     public int? incentivoId { get; set; }
     public List<Tecnicos> ListaTecnicos = new List<Tecnicos>();
+    public bool mostrarNotificacion = false;
+    AlertColor alertColorGuardo,alertColorError;
+    IconName alertIconNameError, alertIconNameGuardo;
+    string alertaGuardo , alertaError = "";
 
 
-     protected override void OnInitialized()
+    protected override void OnInitialized()
     {
         ListaTecnicos = tecnicosService.Listar(c => true);
         ListaIncentivos = incentivoService.Listar(c => true);
@@ -97,20 +109,46 @@
             Incentivos.IncentivoId = incentivoId.Value;
         }
     }
+    public async Task MostrarNotificacion()
+    {
+        mostrarNotificacion = true;
+        StateHasChanged();
+        await Task.Delay(5000);
+        mostrarNotificacion = false;
+        StateHasChanged();
+    }
+    public void AlertaGuardado()
+    {
+        alertColorGuardo = AlertColor.Success;
+        alertIconNameGuardo = IconName.CheckCircleFill;
+        alertaGuardo = "El técnico se registro de manera correcta.";
+
+    }
+    public void AlertaError()
+    {
+        alertColorError = AlertColor.Danger;
+        alertIconNameError = IconName.ExclamationTriangleFill;
+        alertaError = "Ya existe un técnico registrado con ese nombre.";
+
+    }
     public async Task Guardar()
     {
-       Incentivos.TecnicoId = TipoSeleccionado;
+        Incentivos.TecnicoId = TipoSeleccionado;
 
-    if (await Validar())
-    {
-        return;
-    }
-    else
-    {
-        var guardar = await incentivoService.Guardar(Incentivos);
-        if (guardar)
+        if (await Validar())
         {
-            ListaTiposTecnicos = tiposTecnicosService.Listar(c => true);
+            AlertaError();
+            MostrarNotificacion();
+            return;
+        }
+        else
+        {
+            var guardar = await incentivoService.Guardar(Incentivos);
+            if (guardar)
+            {
+                AlertaGuardado();
+                MostrarNotificacion();
+                ListaTiposTecnicos = tiposTecnicosService.Listar(c => true);
             StateHasChanged();
             Nuevo();
         }
